@@ -1,0 +1,21 @@
+{
+  "name": "storefront-beacon-manifest-builder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "HTTP-only storefront URL → ProbePackage + Chat SDK beacon-manifest specs",
+  "bin": {
+    "storefront-probe": "./bin/probe.mjs"
+  },
+  "exports": {
+    ".": "./src/probe/httpProbe.mjs",
+    "./probe": "./src/probe/httpProbe.mjs",
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "probe": "node bin/probe.mjs"
+  }
+}

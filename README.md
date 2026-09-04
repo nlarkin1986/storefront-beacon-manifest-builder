@@ -85,6 +85,25 @@ Custom integration JS bundles, playbooks, site twins, Chat SDK `local-chat-*.jso
 
 Example beacons include **public search-only** vendor keys found in storefront JS (e.g. Algolia search key). Treat them as fixtures, not secrets to rotate. Do not add unpublished passkeys or OMS credentials.
 
+
+## Runnable probe (HTTP-only)
+
+Evidence-only `ProbePackage` for Demo Tools / AssociateRuntime. **Does not** write beacon-manifest (Railway bind does).
+
+```sh
+# CLI (Node 18+)
+node bin/probe.mjs https://www.example.com
+node bin/probe.mjs example.com --out /tmp/probe.json
+
+# Module (embed in AssociateRuntime POST /v1/demo/probe)
+import { probeStorefront } from './src/probe/httpProbe.mjs';
+const probe = await probeStorefront('https://www.example.com');
+```
+
+Then: `POST /v1/demo/ingest` with `{ "probe": <ProbePackage> }`.
+
+No env vars required for the probe itself. Chrome UA + Sec-CH headers are built in.
+
 ## Validation
 
 Examples in this repo passed Chat SDK `validManifest()` + `valid*ManifestConfig` (**11/11**, 2026-09-04). See [`VALIDATION.md`](VALIDATION.md). Unknown config keys are **stripped**, not rejected — still omit Shopify `storeDomain`, Yotpo `siteId`, and lowercase Algolia `appId`.
