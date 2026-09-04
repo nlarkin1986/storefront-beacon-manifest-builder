@@ -1,0 +1,301 @@
+{
+  "schemaVersion": "1.0",
+  "domain": "vuoriclothing.com",
+  "origin": "https://www.vuoriclothing.com",
+  "apex": "vuoriclothing.com",
+  "capturedAt": "2026-09-04T20:24:21.000Z",
+  "discovered_at": "2026-09-04T20:24:08.178Z",
+  "platform": "shopify_headless_next",
+  "platform_host": "checkout.vuoriclothing.com",
+  "page": {
+    "url": "https://vuoriclothing.com/",
+    "title": "Athletic Clothing &amp; Activewear Apparel for Performance \u2013 Vuori"
+  },
+  "harvest": {
+    "scriptSrc": [
+      "https://www.vuoriclothing.com/_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "https://try.abtasty.com/7ea0c41d44f369035a290440e520b7c9.js",
+      "https://config.datas3ntinel.com/tag/83df4bd2-3c11-444d-8f58-b09f3dbb134a/init.min.js",
+      "https://cdn.cookielaw.org/scripttemplates/otSDKStub.js",
+      "https://cdn.shopify.com/shopifycloud/consent-tracking-api/v0.1/consent-tracking-api.js",
+      "https://www.vuoriclothing.com/vuori-nr.js",
+      "https://web.global-e.com/Scripts/Merchants/globale.merchant.storefront.js",
+      "https://cdn-loyalty.yotpo.com/loader/O3FUF9llaC6Iq8y7ds1Y2Q.js",
+      "https://cdn-widgetsrepository.yotpo.com/v1/loader/O3FUF9llaC6Iq8y7ds1Y2Q",
+      "https://www.vuoriclothing.com/_next/static/chunks/3392-389eb6fccec2a1c2.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/9620.17c3dbc1d74a145e.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/7177.cabddf7ad29f46b7.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/6574.0aec87536919bdf6.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/8178.6f6d401965fb8e95.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/3163.2b0d57734af36398.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/5235.44e6d28d743a64be.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/webpack-66b4e6f0afab61e9.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/framework-b9fd9bcc3ecde907.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/main-b93ec5a70c3c3f30.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/pages/_app-23e4a31bebec9328.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/422-98b17b1f44fbb582.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/6550-a161a44a9451c245.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/6962-de7475913261666b.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/1125-c3232127badcc0c6.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/2850-009d340146c7ad39.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/7299-f90faa604ac50d1e.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/pages/index-9d9a3f0257c1860f.js",
+      "https://www.vuoriclothing.com/_next/static/Iw1vdAypsyXTMumNe8ZY7/_buildManifest.js",
+      "https://www.vuoriclothing.com/_next/static/Iw1vdAypsyXTMumNe8ZY7/_ssgManifest.js"
+    ],
+    "network": [
+      {
+        "url": "https://vuoriclothing.com/",
+        "method": "GET"
+      },
+      {
+        "url": "https://cdn.shopify.com/shopifycloud/consent-tracking-api/v0.1/consent-tracking-api.js",
+        "method": "GET"
+      },
+      {
+        "url": "https://web.global-e.com/Scripts/Merchants/globale.merchant.storefront.js",
+        "method": "GET"
+      },
+      {
+        "url": "https://cdn-loyalty.yotpo.com/loader/O3FUF9llaC6Iq8y7ds1Y2Q.js",
+        "method": "GET"
+      },
+      {
+        "url": "https://cdn-widgetsrepository.yotpo.com/v1/loader/O3FUF9llaC6Iq8y7ds1Y2Q",
+        "method": "GET"
+      },
+      {
+        "url": "https://www.vuoriclothing.com/_next/static/chunks/pages/_app-23e4a31bebec9328.js",
+        "method": "GET"
+      },
+      {
+        "url": "https://www.vuoriclothing.com/_next/static/chunks/pages/index-9d9a3f0257c1860f.js",
+        "method": "GET"
+      },
+      {
+        "url": "https://www.vuoriclothing.com/_next/static/chunks/polyfills-42372ed130431b0a.js",
+        "method": "GET"
+      },
+      {
+        "url": "https://try.abtasty.com/7ea0c41d44f369035a290440e520b7c9.js",
+        "method": "GET"
+      }
+    ],
+    "keys": {
+      "shopify": {
+        "myshopify": "vuori-clothing.myshopify.com"
+      },
+      "shopifyStorefront": {
+        "shopDomain": "vuori-clothing.myshopify.com",
+        "apiVersion": "2024-10",
+        "storefrontAccessToken": null
+      },
+      "yotpo": {
+        "appKey": "O3FUF9llaC6Iq8y7ds1Y2Q"
+      },
+      "algolia": {
+        "appId": "P2MLBKGFDS",
+        "apiKey": "16465d97b4cd7959fda8792d6d711582",
+        "indexName": "us_products",
+        "suggestionsIndexName": "us_products_query_suggestions"
+      }
+    }
+  },
+  "liveChecks": [
+    {
+      "id": "algolia.search",
+      "url": "https://P2MLBKGFDS-dsn.algolia.net/1/indexes/*/queries",
+      "status": 200,
+      "sampleKeys": [
+        "hits",
+        "nbHits"
+      ],
+      "note": "status from prior discovery smoke; fixture enriched"
+    },
+    {
+      "id": "shopify.products_json",
+      "url": "https://www.vuoriclothing.com/products.json?limit=1",
+      "status": 404
+    }
+  ],
+  "mcp": {
+    "status": "live",
+    "endpoints": [
+      {
+        "url": "https://www.vuoriclothing.com/.well-known/mcp.json",
+        "status": 404,
+        "finalUrl": "https://vuoriclothing.com/.well-known/mcp.json"
+      },
+      {
+        "url": "https://www.vuoriclothing.com/api/mcp",
+        "status": 405,
+        "finalUrl": "https://vuoriclothing.com/api/mcp"
+      },
+      {
+        "url": "https://www.vuoriclothing.com/mcp",
+        "status": 405,
+        "finalUrl": "https://vuoriclothing.com/mcp"
+      },
+      {
+        "url": "https://checkout.vuoriclothing.com/api/mcp",
+        "status": 200,
+        "finalUrl": "https://checkout.vuoriclothing.com/api/mcp"
+      }
+    ]
+  },
+  "wallHints": {
+    "class": "none"
+  },
+  "surfaces": {
+    "storefront_mcp": "live",
+    "ucp_mcp": "missing",
+    "webmcp": "unknown",
+    "mcp_probe": {
+      "https://www.vuoriclothing.com/.well-known/mcp.json": 404,
+      "https://www.vuoriclothing.com/api/mcp": 405,
+      "https://www.vuoriclothing.com/mcp": 405,
+      "https://checkout.vuoriclothing.com/api/mcp": 200
+    }
+  },
+  "tools": [],
+  "gaps": [
+    "cart_write_requires_shopper_session",
+    "yotpo reviews API Account not found \u2014 Loyalty appKey only"
+  ],
+  "fingerprint": {
+    "scriptCount": 29,
+    "homeStatus": 200,
+    "hasNextData": true,
+    "hasShopify": true
+  },
+  "evidence": {
+    "keys": {
+      "shopify": {
+        "myshopify": "vuori-clothing.myshopify.com"
+      },
+      "shopifyStorefront": {
+        "shopDomain": "vuori-clothing.myshopify.com",
+        "apiVersion": "2024-10",
+        "storefrontAccessToken": null
+      },
+      "yotpo": {
+        "appKey": "O3FUF9llaC6Iq8y7ds1Y2Q"
+      },
+      "algolia": {
+        "appId": "P2MLBKGFDS",
+        "apiKey": "16465d97b4cd7959fda8792d6d711582",
+        "indexName": "us_products",
+        "suggestionsIndexName": "us_products_query_suggestions"
+      }
+    },
+    "http": [
+      {
+        "url": "https://vuoriclothing.com/",
+        "status": 200,
+        "signals": []
+      },
+      {
+        "url": "https://cdn.shopify.com/shopifycloud/consent-tracking-api/v0.1/consent-tracking-api.js",
+        "status": 200,
+        "signals": []
+      },
+      {
+        "url": "https://web.global-e.com/Scripts/Merchants/globale.merchant.storefront.js",
+        "status": 200,
+        "signals": []
+      },
+      {
+        "url": "https://cdn-loyalty.yotpo.com/loader/O3FUF9llaC6Iq8y7ds1Y2Q.js",
+        "status": 200,
+        "signals": []
+      },
+      {
+        "url": "https://cdn-widgetsrepository.yotpo.com/v1/loader/O3FUF9llaC6Iq8y7ds1Y2Q",
+        "status": 200,
+        "signals": []
+      },
+      {
+        "url": "https://www.vuoriclothing.com/_next/static/chunks/pages/_app-23e4a31bebec9328.js",
+        "status": 200,
+        "signals": []
+      },
+      {
+        "url": "https://www.vuoriclothing.com/_next/static/chunks/pages/index-9d9a3f0257c1860f.js",
+        "status": 200,
+        "signals": []
+      },
+      {
+        "url": "https://www.vuoriclothing.com/_next/static/chunks/polyfills-42372ed130431b0a.js",
+        "status": 200,
+        "signals": []
+      },
+      {
+        "url": "https://try.abtasty.com/7ea0c41d44f369035a290440e520b7c9.js",
+        "status": 200,
+        "signals": []
+      }
+    ],
+    "mcp": {
+      "status": "live",
+      "endpoints": [
+        {
+          "url": "https://www.vuoriclothing.com/.well-known/mcp.json",
+          "status": 404,
+          "finalUrl": "https://vuoriclothing.com/.well-known/mcp.json"
+        },
+        {
+          "url": "https://www.vuoriclothing.com/api/mcp",
+          "status": 405,
+          "finalUrl": "https://vuoriclothing.com/api/mcp"
+        },
+        {
+          "url": "https://www.vuoriclothing.com/mcp",
+          "status": 405,
+          "finalUrl": "https://vuoriclothing.com/mcp"
+        },
+        {
+          "url": "https://checkout.vuoriclothing.com/api/mcp",
+          "status": 200,
+          "finalUrl": "https://checkout.vuoriclothing.com/api/mcp"
+        }
+      ]
+    },
+    "scriptSrc": [
+      "https://www.vuoriclothing.com/_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "https://try.abtasty.com/7ea0c41d44f369035a290440e520b7c9.js",
+      "https://config.datas3ntinel.com/tag/83df4bd2-3c11-444d-8f58-b09f3dbb134a/init.min.js",
+      "https://cdn.cookielaw.org/scripttemplates/otSDKStub.js",
+      "https://cdn.shopify.com/shopifycloud/consent-tracking-api/v0.1/consent-tracking-api.js",
+      "https://www.vuoriclothing.com/vuori-nr.js",
+      "https://web.global-e.com/Scripts/Merchants/globale.merchant.storefront.js",
+      "https://cdn-loyalty.yotpo.com/loader/O3FUF9llaC6Iq8y7ds1Y2Q.js",
+      "https://cdn-widgetsrepository.yotpo.com/v1/loader/O3FUF9llaC6Iq8y7ds1Y2Q",
+      "https://www.vuoriclothing.com/_next/static/chunks/3392-389eb6fccec2a1c2.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/9620.17c3dbc1d74a145e.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/7177.cabddf7ad29f46b7.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/6574.0aec87536919bdf6.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/8178.6f6d401965fb8e95.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/3163.2b0d57734af36398.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/5235.44e6d28d743a64be.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/webpack-66b4e6f0afab61e9.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/framework-b9fd9bcc3ecde907.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/main-b93ec5a70c3c3f30.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/pages/_app-23e4a31bebec9328.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/422-98b17b1f44fbb582.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/6550-a161a44a9451c245.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/6962-de7475913261666b.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/1125-c3232127badcc0c6.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/2850-009d340146c7ad39.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/7299-f90faa604ac50d1e.js",
+      "https://www.vuoriclothing.com/_next/static/chunks/pages/index-9d9a3f0257c1860f.js",
+      "https://www.vuoriclothing.com/_next/static/Iw1vdAypsyXTMumNe8ZY7/_buildManifest.js",
+      "https://www.vuoriclothing.com/_next/static/Iw1vdAypsyXTMumNe8ZY7/_ssgManifest.js"
+    ]
+  },
+  "draftBeacon": null,
+  "_fixture": {
+    "source": "httpProbe.mjs + discovery key enrichment",
+    "not": "live Chrome extension capture",
+    "schema": "schemas/probe-package.schema.json"
+  }
+}
