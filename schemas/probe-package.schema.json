@@ -1,0 +1,378 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nlarkin1986/storefront-beacon-manifest-builder/schemas/probe-package.schema.json",
+  "title": "ProbePackage",
+  "description": "Evidence-only package from Demo Tools on-site scrape or Path B HTTP probe. Railway Manifest Builder re-binds beacon-manifest from this; draftBeacon is never SoT. Keys must come from network + script src, never page-prose regex.",
+  "type": "object",
+  "required": [
+    "origin"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0",
+      "description": "ProbePackage envelope version"
+    },
+    "domain": {
+      "type": "string",
+      "description": "e.g. vuoriclothing.com"
+    },
+    "origin": {
+      "type": "string",
+      "format": "uri",
+      "description": "Storefront origin, e.g. https://www.vuoriclothing.com"
+    },
+    "apex": {
+      "type": "string"
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "discovered_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Alias of capturedAt (discovery emits)"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "platform_host": {
+      "type": "string"
+    },
+    "page": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "harvest": {
+      "type": "object",
+      "description": "On-page harvest (preferred over top-level secrets)",
+      "properties": {
+        "scriptSrc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "network": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "globals": {
+          "type": "object"
+        },
+        "keys": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "algolia": {
+              "type": "object",
+              "properties": {
+                "appId": {
+                  "type": "string",
+                  "description": "Case-sensitive; uppercase required for many apps"
+                },
+                "apiKey": {
+                  "type": "string"
+                },
+                "indexName": {
+                  "type": "string"
+                },
+                "suggestionsIndexName": {
+                  "type": "string"
+                }
+              }
+            },
+            "constructorio": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "serviceUrl": {
+                  "type": "string"
+                },
+                "section": {
+                  "type": "string"
+                }
+              }
+            },
+            "bazaarvoice": {
+              "type": "object",
+              "properties": {
+                "clientName": {
+                  "type": "string"
+                },
+                "locale": {
+                  "type": "string"
+                },
+                "bfdToken": {
+                  "type": "string"
+                }
+              }
+            },
+            "turnto": {
+              "type": "object",
+              "properties": {
+                "siteKey": {
+                  "type": "string"
+                },
+                "locale": {
+                  "type": "string"
+                }
+              }
+            },
+            "yotpo": {
+              "type": "object",
+              "properties": {
+                "appKey": {
+                  "type": "string",
+                  "description": "Not siteId"
+                }
+              }
+            },
+            "shopify": {
+              "type": "object",
+              "properties": {
+                "shop": {
+                  "type": "string"
+                },
+                "myshopify": {
+                  "type": "string"
+                }
+              }
+            },
+            "shopifyStorefront": {
+              "type": "object",
+              "properties": {
+                "shopDomain": {
+                  "type": "string"
+                },
+                "storefrontAccessToken": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "apiVersion": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "liveChecks": {
+      "type": "array",
+      "description": "What answered in-page under real UA/cookies",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "sampleKeys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "mcp": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "missing",
+            "live",
+            "partial"
+          ]
+        },
+        "endpoints": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "wallHints": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "type": "string",
+          "enum": [
+            "none",
+            "akamai_a32",
+            "akamai_bvm",
+            "datadome",
+            "ge401001",
+            "imperva"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "surfaces": {
+      "description": "MCP/WebMCP surface status \u2014 object (preferred) or array",
+      "oneOf": [
+        {
+          "type": "object"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      ]
+    },
+    "tools": {
+      "type": "array",
+      "description": "Optional discovery-style bindings (Gladly-canonical tool names)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tool": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "auth": {
+            "type": "string"
+          },
+          "transport": {
+            "type": "string"
+          },
+          "call": {
+            "type": "object"
+          },
+          "example_keys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "description": "string or {tool, reason, hint}",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "tool": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "hint": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "fingerprint": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "object",
+      "description": "Raw observations; keys may duplicate harvest.keys \u2014 ingest may merge",
+      "additionalProperties": true,
+      "properties": {
+        "keys": {
+          "type": "object"
+        },
+        "http": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "mcp": {
+          "type": "object"
+        },
+        "jsonLd": {
+          "type": "array"
+        },
+        "network": {
+          "type": "array"
+        },
+        "scriptSrc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "secrets": {
+      "type": "object",
+      "description": "Deprecated alias of harvest.keys / evidence.keys \u2014 prefer harvest.keys"
+    },
+    "draftBeacon": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Optimistic UI only \u2014 NEVER trusted as SoT; Railway re-binds"
+    },
+    "draftDiscovery": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Optional optimistic discovery; evidence only"
+    }
+  }
+}

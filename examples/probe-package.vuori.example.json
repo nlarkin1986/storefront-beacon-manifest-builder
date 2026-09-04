@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "domain": "vuoriclothing.com",
+  "origin": "https://www.vuoriclothing.com",
+  "capturedAt": "2026-09-04T18:00:00.000Z",
+  "platform": "shopify_headless_next",
+  "platform_host": "checkout.vuoriclothing.com",
+  "harvest": {
+    "keys": {
+      "algolia": {
+        "appId": "P2MLBKGFDS",
+        "apiKey": "16465d97b4cd7959fda8792d6d711582",
+        "indexName": "us_products",
+        "suggestionsIndexName": "us_products_query_suggestions"
+      },
+      "shopify": {
+        "myshopify": "vuori-clothing.myshopify.com"
+      },
+      "shopifyStorefront": {
+        "shopDomain": "vuori-clothing.myshopify.com",
+        "apiVersion": "2024-10"
+      },
+      "yotpo": {
+        "appKey": "O3FUF9llaC6Iq8y7ds1Y2Q"
+      }
+    }
+  },
+  "liveChecks": [
+    {
+      "id": "algolia.search",
+      "url": "https://P2MLBKGFDS-dsn.algolia.net/1/indexes/*/queries",
+      "status": 200,
+      "sampleKeys": [
+        "hits",
+        "nbHits"
+      ]
+    }
+  ],
+  "mcp": {
+    "status": "live",
+    "endpoints": [
+      {
+        "url": "https://checkout.vuoriclothing.com/api/mcp",
+        "status": 200
+      }
+    ]
+  },
+  "wallHints": {
+    "class": "none"
+  },
+  "gaps": [
+    "yotpo reviews API Account not found \u2014 Loyalty appKey only"
+  ],
+  "draftBeacon": null
+}

@@ -22,6 +22,7 @@ Target latency: Path A (vendor commons) ~20s; Path B (custom BFF) 30–60s for d
 2. Run the probe in [`spec/path-b-storefront-probe.md`](spec/path-b-storefront-probe.md).
 3. Validate `common[].config` against [`spec/beacon-config-reference.md`](spec/beacon-config-reference.md).
 4. Stamp discovery fields from [`schemas/discovery-emit-template.json`](schemas/discovery-emit-template.json).
+4b. Demo Tools scrape→POST uses [`schemas/probe-package.schema.json`](schemas/probe-package.schema.json) (evidence only; Railway re-binds beacon).
 5. Diff your beacon against examples:
    - Path A thick: [`examples/path-a/vuoriclothing.com.beacon-manifest.json`](examples/path-a/vuoriclothing.com.beacon-manifest.json)
    - Path A commons on a walled site: [`examples/path-a/jcrew.com.beacon-manifest.json`](examples/path-a/jcrew.com.beacon-manifest.json)
