@@ -84,6 +84,10 @@ Custom integration JS bundles, playbooks, site twins, Chat SDK `local-chat-*.jso
 
 Example beacons include **public search-only** vendor keys found in storefront JS (e.g. Algolia search key). Treat them as fixtures, not secrets to rotate. Do not add unpublished passkeys or OMS credentials.
 
+## Validation
+
+Examples in this repo passed Chat SDK `validManifest()` + `valid*ManifestConfig` (**11/11**, 2026-09-04). See [`VALIDATION.md`](VALIDATION.md). Unknown config keys are **stripped**, not rejected — still omit Shopify `storeDomain`, Yotpo `siteId`, and lowercase Algolia `appId`.
+
 ## License
 
 Internal implementer pack. Copy into the tool that will run the probes.

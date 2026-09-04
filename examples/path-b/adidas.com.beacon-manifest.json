@@ -1,0 +1,419 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-09-04T12:05:00.000Z",
+  "integrations": {
+    "core": {
+      "tools": [
+        {
+          "name": "clickElement",
+          "description": "Click an element on the page. Identify it by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Errors if neither is given or the element cannot be found.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector (e.g. \"#add-to-cart\"). Use only when you do not have a handle. First match is clicked.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        {
+          "name": "describeElement",
+          "description": "Return detailed information about one element, identified by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Includes its accessible name and how it was derived, role, all attributes, visibility and interaction state, position, the region it belongs to, its associated label, nearby interactive controls, and a summary of its children. Use this to confirm you have the right element before acting on it.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector. Use only when you do not have a handle.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "fillInput",
+          "description": "Enter a value into a text input, textarea, or contenteditable element. Identify the element by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. For checkboxes, radios, and buttons use clickElement instead.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector. Use only when you do not have a handle.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "value": {
+                "description": "The text to enter. An empty string clears the field.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "value"
+            ],
+            "type": "object"
+          }
+        },
+        {
+          "name": "findElements",
+          "description": "Search the current page for elements matching any combination of criteria, and return a ranked list of compact descriptors \u2014 each with a `ref` handle you can pass to scrollToElement, highlightElement, or clickElement. Combine criteria to narrow results (e.g. category \"input\" + text \"promo\"). Results are visible elements by default, ranked by how well they match \u2014 NOT by where they sit on screen. Each result reports whether it is currently in view (state.inViewport); when the element you want is not in view, call scrollToElement with its handle to bring it on-screen before highlighting or clicking. Prefer this over guessing CSS selectors.",
+          "inputSchema": {
+            "properties": {
+              "attributes": {
+                "description": "Match attributes by substring, e.g. {\"placeholder\":\"code\",\"type\":\"text\"}. An empty value matches presence only.",
+                "type": "object"
+              },
+              "category": {
+                "description": "High-level element bucket. \"clickable\" also surfaces heuristically-detected click targets (divs/spans with click affordances).",
+                "enum": [
+                  "input",
+                  "button",
+                  "link",
+                  "image",
+                  "heading",
+                  "landmark",
+                  "media",
+                  "control",
+                  "clickable"
+                ],
+                "type": "string"
+              },
+              "inViewportOnly": {
+                "description": "Only elements currently in the viewport. Default false.",
+                "type": "boolean"
+              },
+              "limit": {
+                "description": "Max results (1\u201350). Default 20.",
+                "type": "number"
+              },
+              "matchMode": {
+                "description": "How `text` matches. Default \"fuzzy\" (lexical recall). Use \"exact\" once you know the literal on-page string.",
+                "enum": [
+                  "fuzzy",
+                  "exact"
+                ],
+                "type": "string"
+              },
+              "near": {
+                "description": "A handle (from a prior findElements) \u2014 restrict to elements spatially or structurally near it.",
+                "type": "string"
+              },
+              "offset": {
+                "description": "Skip the first N matches (paging). Default 0.",
+                "type": "number"
+              },
+              "role": {
+                "description": "ARIA role: button, link, textbox, checkbox, radio, img, heading, etc.",
+                "type": "string"
+              },
+              "text": {
+                "description": "Free-text match over the element's whole textual surface \u2014 accessible name, own text, placeholder, aria-label, alt, title, value, and the associated <label>. Lexical and recall-oriented: case/accent-insensitive, word-order-independent, partial words allowed. Try synonyms across separate calls (e.g. \"discount\" then \"promo\"); this does NOT expand synonyms for you.",
+                "type": "string"
+              },
+              "visibleOnly": {
+                "description": "Only visible elements. Default true.",
+                "type": "boolean"
+              },
+              "within": {
+                "description": "A handle, or a landmark/section name (e.g. \"Order Summary\") \u2014 restrict the search to that subtree.",
+                "type": "string"
+              }
+            },
+            "required": [],
+            "type": "object"
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "getPageContext",
+          "description": "Return metadata about the current page: url, canonicalUrl, title, meta tags (description, keywords, Open Graph, Twitter Card, etc.), and parsed JSON-LD structured-data blocks. Use this to understand what page the user is on.",
+          "inputSchema": {
+            "properties": {},
+            "required": [],
+            "type": "object"
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "getPageOutline",
+          "description": "Return the structural skeleton of the current page: landmark regions (header, nav, main, footer, and labeled sections), the heading outline, the forms present, and a count of interactive elements by category. Use this first to understand how the page is organized before searching for specific elements with findElements. Landmarks and forms include a handle you can pass to findElements' `within` to scope a search.",
+          "inputSchema": {
+            "properties": {},
+            "required": [],
+            "type": "object"
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "highlightElement",
+          "description": "Draw the user's attention to an element on the page (a temporary visual emphasis). Identify it by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Errors if neither is given or the element cannot be found.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector (e.g. \"#promo-banner\"). Use only when you do not have a handle. First match is highlighted.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        {
+          "name": "navigateToUrl",
+          "description": "Navigate the current page to a URL on the same site. Accepts an absolute URL or a path (e.g. \"/cart\"). Same-origin only \u2014 cross-origin navigation is rejected. If the URL already matches the current page, navigation is skipped. Returns the URLs navigated from and to, plus a `navigated` flag (false when skipped, with a `reason` explaining why).",
+          "inputSchema": {
+            "properties": {
+              "url": {
+                "description": "An absolute same-origin URL (e.g. \"https://shop.example.com/cart\") or a path (e.g. \"/cart\").",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "url"
+            ],
+            "type": "object"
+          }
+        },
+        {
+          "name": "scrollToElement",
+          "description": "Scroll an element into view. Identify it by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Use this when a findElements result reports state.inViewport: false, to bring it on-screen before highlighting or clicking. Errors if neither is given or the element cannot be found.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector (e.g. \"#reviews\"). Use only when you do not have a handle. First match is scrolled into view.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      ]
+    },
+    "common": [
+      {
+        "name": "bazaarvoice",
+        "config": {
+          "clientName": "adidas",
+          "locale": "en_US"
+        },
+        "tools": [
+          {
+            "name": "getProductReviews",
+            "description": "Get customer reviews for a product from Bazaarvoice. Supports pagination, sorting, filtering by star rating, keyword search, sorting by a product feature, and a photos-only mode. Each review carries title, body, rating, date, recommendation flag, helpfulness votes, and photo URLs.",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "The id of the product. Required",
+                  "minLength": 1
+                },
+                "limit": {
+                  "type": "integer",
+                  "description": "Number of reviews to return (default: 5, max: 10). Capped low because BV review payloads are heavy.",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                "offset": {
+                  "type": "integer",
+                  "description": "Number of reviews to skip for pagination (default: 0).",
+                  "minimum": 0
+                },
+                "sort": {
+                  "type": "string",
+                  "description": "Sort order. Ignored when `search` is supplied (Bazaarvoice sorts by relevance during search and returns 0 results if both are sent).",
+                  "enum": [
+                    "rating:desc",
+                    "rating:asc",
+                    "submissiontime:desc",
+                    "submissiontime:asc",
+                    "helpfulness:desc"
+                  ]
+                },
+                "ratingFilter": {
+                  "type": "integer",
+                  "description": "Filter to reviews with this exact star rating (1-5).",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                "search": {
+                  "type": "string",
+                  "description": "Keyword search within review text (e.g. \"shipping\", \"quality\"). Bazaarvoice ranks results by relevance; the `sort` argument is ignored when this is set."
+                },
+                "feature": {
+                  "type": "string",
+                  "description": "Sort reviews by relevance to a named product feature/attribute (e.g. \"satisfaction\", \"quality\", \"value\")."
+                },
+                "photosOnly": {
+                  "type": "boolean",
+                  "description": "When true, returns only reviews that include photos."
+                }
+              },
+              "required": [
+                "productId"
+              ]
+            }
+          },
+          {
+            "name": "getReviewSummary",
+            "description": "Get Bazaarvoice's aggregate review summary for a product. Returns the raw BV summary envelope (average rating, total review count, rating distribution, and bullet-point highlights).",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "The id of the product. Required",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "productId"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "custom": [
+      {
+        "name": "adidas",
+        "bundleUrl": "http://localhost:4269/orgs/configs/chat/local-chat-adidas-bundle.js",
+        "tools": [
+          {
+            "name": "searchProducts",
+            "description": "Search adidas.com US catalog via Glass content-engine GET /api/plp/content-engine?sitePath=us&query={q}. Returns compact cards with articleId (productId), title, price, salePrice, rating, image, and PDP link. Empty query returns no results without a network call. Read-only \u2014 no cart. Requires Chrome UA + Sec-CH-UA + Origin/Referer (bare UA / Googlebot \u2192 Akamai 403). Do NOT call /api/plp/content-engine/search.",
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "query": {
+                  "type": "string",
+                  "description": "Search keyword, e.g. \"samba\" or \"ultraboost\"."
+                },
+                "limit": {
+                  "type": "number",
+                  "description": "Max products to return (default 12, max 48).",
+                  "minimum": 1,
+                  "maximum": 48
+                }
+              },
+              "required": [
+                "query"
+              ]
+            }
+          },
+          {
+            "name": "getProduct",
+            "description": "Fetch adidas product detail by article number via GET /api/search/product/{articleId}?sitePath=us. Pass articleId (e.g. B75806). Returns title, brand, color, price, orderable, images, and PDP link. Read-only \u2014 no cart. Chrome UA + Sec-CH required. Pass the same articleId to bazaarvoice review tools.",
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "Adidas article number / productId (e.g. \"B75806\").",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "productId"
+              ]
+            }
+          },
+          {
+            "name": "browseCategory",
+            "description": "Browse adidas US category grids via the same content-engine endpoint with a taxonomy slug (path after /us/), e.g. men-shoes, women-shoes. Pass categoryId as the slug, or categoryName to map onto known taxonomies. If neither is provided, returns the taxonomy index without a network call. Keyword search should prefer searchProducts.",
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "categoryId": {
+                  "type": "string",
+                  "description": "Taxonomy slug, e.g. \"men-shoes\" or \"women-shoes\"."
+                },
+                "categoryName": {
+                  "type": "string",
+                  "description": "Friendly name; case-insensitive contains match when categoryId omitted."
+                },
+                "limit": {
+                  "type": "number",
+                  "description": "Max products to return (default 24, max 48).",
+                  "minimum": 1,
+                  "maximum": 48
+                }
+              }
+            }
+          },
+          {
+            "name": "searchPolicies",
+            "description": "Fetch adidas Help pages under /us/help/{topic}/{slug} and return title/summary text from HelpPage __NEXT_DATA__ layouts. Topics map onto proven footer URLs (returns, exchanges, refunds, shipping/delivery, privacy, size charts). Live Help HTML often Akamai 403 \u2014 falls back to Wayback then Scout Wayback-validated cache. Never invents policy terms beyond fetched/validated copy. Chrome UA + Sec-CH preferred.",
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "topic": {
+                  "type": "string",
+                  "description": "Policy topic: returns/exchanges/refunds/shipping/privacy/size charts (or free text with those cues).",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "topic"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "_notes": {
+    "custom": "Wired adidas custom bundle \u2014 Glass content-engine search/browse + search/product getProduct + Help searchPolicies (Wayback fallback). Bazaarvoice remains common only (clientName adidas, no passkey). No cart/showCheckout. No invented MCP.",
+    "bazaarvoice": "clientName adidas from deployments/adidas/main_site/production/en_US (displayCode 28373; api-config client=adidas; conversations=true; askAndAnswer=false; siteAuth=true). Passkey omitted \u2014 not published. productId = article number (e.g. B75806). getProductQuestions omitted \u2014 askAndAnswer false.",
+    "core": "Copied cleaned core from nike.com.beacon-manifest.json \u2014 no showCheckout (no checkout config).",
+    "platform": "adidas_glass_next; demo_ready via content-engine search+get+browse + Help searchPolicies (medium) + BV",
+    "discovered_at": "2026-09-04T06:55:00-05:00"
+  }
+}
