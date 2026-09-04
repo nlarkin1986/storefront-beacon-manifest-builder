@@ -1,0 +1,401 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-09-04T11:55:00.000Z",
+  "integrations": {
+    "core": {
+      "tools": [
+        {
+          "name": "clickElement",
+          "description": "Click an element on the page. Identify it by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Errors if neither is given or the element cannot be found.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector (e.g. \"#add-to-cart\"). Use only when you do not have a handle. First match is clicked.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        {
+          "name": "describeElement",
+          "description": "Return detailed information about one element, identified by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Includes its accessible name and how it was derived, role, all attributes, visibility and interaction state, position, the region it belongs to, its associated label, nearby interactive controls, and a summary of its children. Use this to confirm you have the right element before acting on it.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector. Use only when you do not have a handle.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "fillInput",
+          "description": "Enter a value into a text input, textarea, or contenteditable element. Identify the element by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. For checkboxes, radios, and buttons use clickElement instead.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector. Use only when you do not have a handle.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "value": {
+                "description": "The text to enter. An empty string clears the field.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "value"
+            ],
+            "type": "object"
+          }
+        },
+        {
+          "name": "findElements",
+          "description": "Search the current page for elements matching any combination of criteria, and return a ranked list of compact descriptors \u2014 each with a `ref` handle you can pass to scrollToElement, highlightElement, or clickElement. Combine criteria to narrow results (e.g. category \"input\" + text \"promo\"). Results are visible elements by default, ranked by how well they match \u2014 NOT by where they sit on screen. Each result reports whether it is currently in view (state.inViewport); when the element you want is not in view, call scrollToElement with its handle to bring it on-screen before highlighting or clicking. Prefer this over guessing CSS selectors.",
+          "inputSchema": {
+            "properties": {
+              "attributes": {
+                "description": "Match attributes by substring, e.g. {\"placeholder\":\"code\",\"type\":\"text\"}. An empty value matches presence only.",
+                "type": "object"
+              },
+              "category": {
+                "description": "High-level element bucket. \"clickable\" also surfaces heuristically-detected click targets (divs/spans with click affordances).",
+                "enum": [
+                  "input",
+                  "button",
+                  "link",
+                  "image",
+                  "heading",
+                  "landmark",
+                  "media",
+                  "control",
+                  "clickable"
+                ],
+                "type": "string"
+              },
+              "inViewportOnly": {
+                "description": "Only elements currently in the viewport. Default false.",
+                "type": "boolean"
+              },
+              "limit": {
+                "description": "Max results (1\u201350). Default 20.",
+                "type": "number"
+              },
+              "matchMode": {
+                "description": "How `text` matches. Default \"fuzzy\" (lexical recall). Use \"exact\" once you know the literal on-page string.",
+                "enum": [
+                  "fuzzy",
+                  "exact"
+                ],
+                "type": "string"
+              },
+              "near": {
+                "description": "A handle (from a prior findElements) \u2014 restrict to elements spatially or structurally near it.",
+                "type": "string"
+              },
+              "offset": {
+                "description": "Skip the first N matches (paging). Default 0.",
+                "type": "number"
+              },
+              "role": {
+                "description": "ARIA role: button, link, textbox, checkbox, radio, img, heading, etc.",
+                "type": "string"
+              },
+              "text": {
+                "description": "Free-text match over the element's whole textual surface \u2014 accessible name, own text, placeholder, aria-label, alt, title, value, and the associated <label>. Lexical and recall-oriented: case/accent-insensitive, word-order-independent, partial words allowed. Try synonyms across separate calls (e.g. \"discount\" then \"promo\"); this does NOT expand synonyms for you.",
+                "type": "string"
+              },
+              "visibleOnly": {
+                "description": "Only visible elements. Default true.",
+                "type": "boolean"
+              },
+              "within": {
+                "description": "A handle, or a landmark/section name (e.g. \"Order Summary\") \u2014 restrict the search to that subtree.",
+                "type": "string"
+              }
+            },
+            "required": [],
+            "type": "object"
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "getPageContext",
+          "description": "Return metadata about the current page: url, canonicalUrl, title, meta tags (description, keywords, Open Graph, Twitter Card, etc.), and parsed JSON-LD structured-data blocks. Use this to understand what page the user is on.",
+          "inputSchema": {
+            "properties": {},
+            "required": [],
+            "type": "object"
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "getPageOutline",
+          "description": "Return the structural skeleton of the current page: landmark regions (header, nav, main, footer, and labeled sections), the heading outline, the forms present, and a count of interactive elements by category. Use this first to understand how the page is organized before searching for specific elements with findElements. Landmarks and forms include a handle you can pass to findElements' `within` to scope a search.",
+          "inputSchema": {
+            "properties": {},
+            "required": [],
+            "type": "object"
+          },
+          "annotations": {
+            "readOnlyHint": true
+          }
+        },
+        {
+          "name": "highlightElement",
+          "description": "Draw the user's attention to an element on the page (a temporary visual emphasis). Identify it by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Errors if neither is given or the element cannot be found.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector (e.g. \"#promo-banner\"). Use only when you do not have a handle. First match is highlighted.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        {
+          "name": "navigateToUrl",
+          "description": "Navigate the current page to a URL on the same site. Accepts an absolute URL or a path (e.g. \"/cart\"). Same-origin only \u2014 cross-origin navigation is rejected. If the URL already matches the current page, navigation is skipped. Returns the URLs navigated from and to, plus a `navigated` flag (false when skipped, with a `reason` explaining why).",
+          "inputSchema": {
+            "properties": {
+              "url": {
+                "description": "An absolute same-origin URL (e.g. \"https://shop.example.com/cart\") or a path (e.g. \"/cart\").",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "url"
+            ],
+            "type": "object"
+          }
+        },
+        {
+          "name": "scrollToElement",
+          "description": "Scroll an element into view. Identify it by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Use this when a findElements result reports state.inViewport: false, to bring it on-screen before highlighting or clicking. Errors if neither is given or the element cannot be found.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector (e.g. \"#reviews\"). Use only when you do not have a handle. First match is scrolled into view.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      ]
+    },
+    "common": [
+      {
+        "name": "turnto",
+        "config": {
+          "siteKey": "78GDJmj4zEDYwwHsite",
+          "locale": "en_US"
+        },
+        "tools": [
+          {
+            "name": "getReviewSummary",
+            "description": "Get TurnTo's aggregate review summary for a product: average rating, total review count, rating distribution, per-aspect ratings (e.g. value, durability, quality), and TurnTo's own LLM-generated `aiSummary` of what customers say. This is the cheap, high-signal call \u2014 prefer it over fetching individual reviews when the customer just wants the gist or a rating. Three fields need care. Each `aspectRatings` entry has its own `responseCount`: those questions are optional, so an aspect average often comes from far fewer reviewers than `totalReviews` \u2014 always cite it with its count, never as the overall verdict. Quote `totalReviews`; `directReviewsCount` and `relatedReviewsCount` break it down rather than adding to it, so never sum them. `recommendedPercentageFormatted` is null on sites that don't ask the recommend question, which is also why getProductReviews returns `recommended: null` there \u2014 check it before concluding anything from that field.",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "The product's TurnTo id \u2014 the catalog style id (e.g. \"CW2288\"), not the variant SKU/style-color. Required.",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "productId"
+              ]
+            },
+            "annotations": {
+              "readOnlyHint": true
+            }
+          },
+          {
+            "name": "getProductReviews",
+            "description": "Get individual customer reviews for a product from TurnTo. Returns a page of reviews \u2014 each with title, body, rating, date, helpfulness votes, and the syndication source when the review was carried over from another retailer. Use getReviewSummary first for the overview; reach for this when the customer wants to read specific reviews. `recommended` is `true` only when the reviewer explicitly recommended the product and `null` otherwise \u2014 many sites never ask the question, so `null` means \"not stated\", never \"would not recommend\".",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "The product's TurnTo id \u2014 the catalog style id (e.g. \"CW2288\"), not the variant SKU/style-color. Required.",
+                  "minLength": 1
+                },
+                "limit": {
+                  "type": "integer",
+                  "description": "Number of reviews to return per call (default: 10, max: 20).",
+                  "minimum": 1,
+                  "maximum": 20
+                },
+                "offset": {
+                  "type": "integer",
+                  "description": "Zero-based index of the first review to return \u2014 a count of reviews to skip, not a page number. To read the next batch, advance it by `limit` (0, then 10, then 20, \u2026). Default: 0. Start at 0: past the last review TurnTo returns an empty list AND `totalResults: 0`, so `totalResults` is the real count only while the offset is in range \u2014 never report \"no reviews\" from a page you reached by skipping ahead.",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "productId"
+              ]
+            },
+            "annotations": {
+              "readOnlyHint": true
+            }
+          }
+        ]
+      }
+    ],
+    "custom": [
+      {
+        "name": "nike",
+        "bundleUrl": "http://localhost:4269/orgs/configs/chat/local-chat-nike-bundle.js",
+        "tools": [
+          {
+            "name": "searchProducts",
+            "description": "Search Nike's live product catalog via api.nike.com/product_feed/threads/v2 (searchTerms + Nike.com channelId). Returns compact cards with styleColor, styleCode, title, price, availability, image, and PDP path. Empty query returns no results without a network call. Read-only \u2014 no cart. Prefer Chrome UA (Googlebot is Akamai-blocked). For TurnTo reviews use styleCode (e.g. CW2288), not styleColor.",
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "query": {
+                  "type": "string",
+                  "description": "Search keyword, e.g. \"pegasus\" or \"air force 1\"."
+                },
+                "anchor": {
+                  "type": "number",
+                  "description": "Pagination offset (default 0).",
+                  "minimum": 0
+                },
+                "count": {
+                  "type": "number",
+                  "description": "Results per page (default 12, max 24).",
+                  "minimum": 1,
+                  "maximum": 24
+                }
+              },
+              "required": [
+                "query"
+              ]
+            }
+          },
+          {
+            "name": "getProduct",
+            "description": "Fetch Nike product detail from api.nike.com/product_feed/threads/v2 filtered by productInfo.merchProduct.styleColor({id}). Pass a styleColor (e.g. CW2288-111). Returns title, price, availability, sizes (nikeSize), image, slug/PDP, and styleCode for TurnTo. Read-only \u2014 no cart. Chrome UA required.",
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "Nike styleColor (e.g. \"CW2288-111\"). Not the TurnTo styleCode alone.",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "productId"
+              ]
+            }
+          },
+          {
+            "name": "browseCategory",
+            "description": "Browse Nike gridwall HTML at /w/{wall} (Chrome UA). Pass wall path (categoryId) such as mens-shoes-nik1zy7ok, or categoryName to map onto known walls (Men's Shoes, Women's Shoes, Men's Running, New Men's Shoes). If neither is provided, returns the wall index without a network call. Extracts /t/{slug}/{styleColor} PDP links. Read-only \u2014 no cart. Keyword search should prefer searchProducts (product_feed).",
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "categoryId": {
+                  "type": "string",
+                  "description": "Nike wall path slug, e.g. \"mens-shoes-nik1zy7ok\"."
+                },
+                "categoryName": {
+                  "type": "string",
+                  "description": "Friendly name; case-insensitive contains match against known walls when categoryId is omitted."
+                },
+                "limit": {
+                  "type": "number",
+                  "description": "Max PDP links to return (default 24, max 60).",
+                  "minimum": 1,
+                  "maximum": 60
+                }
+              }
+            }
+          },
+          {
+            "name": "searchPolicies",
+            "description": "Fetch Nike Help CMS article HTML (/help/a/{slug}) and return title, description, and card body text from __NEXT_DATA__ cmsPost. Topics map onto proven slugs (returns-policy, exchange-policy, shipping-delivery, free-shipping, international-shipping, order-tracking, how-to-return, nikeid-return, member-benefits). Never invents policy text if the fetch fails. Chrome UA required. Use returns-policy (not returns-policy-us).",
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "topic": {
+                  "type": "string",
+                  "description": "Policy topic: returns/exchange/shipping/free shipping/international/order tracking/how to return/membership/nike by you (or free text with those cues).",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "topic"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "_notes": {
+    "custom": "Wired nike custom bundle \u2014 product_feed search/get + HTML gridwall browse + Help cmsPost policies. TurnTo remains common only. No cart/showCheckout. No invented MCP.",
+    "turnto": "siteKey 78GDJmj4zEDYwwHsite from PDP pageProps.turnToSiteKey; locale en_US. productId MUST be styleCode (CW2288), not styleColor. No passkey field (TurnTo ManifestConfig is siteKey/locale/apiBase only).",
+    "core": "Copied cleaned core from nordstrom/gap beacon \u2014 no showCheckout (no checkout config).",
+    "platform": "nike_custom_nextjs; demo_ready via product_feed search+get_product + Help cmsPost search_policies + TurnTo",
+    "discovered_at": "2026-09-04T06:50:00-05:00"
+  }
+}

@@ -1,0 +1,534 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-09-04T15:36:56.000Z",
+  "integrations": {
+    "common": [
+      {
+        "name": "algolia",
+        "config": {
+          "appId": "P2MLBKGFDS",
+          "apiKey": "16465d97b4cd7959fda8792d6d711582",
+          "indexName": "us_products",
+          "suggestionsIndexName": "us_products_query_suggestions"
+        },
+        "tools": [
+          {
+            "description": "Get autocomplete suggestions for a partial query. Returns a list of suggested search strings.",
+            "inputSchema": {
+              "properties": {
+                "hitsPerPage": {
+                  "description": "Suggestions to return (default: 5).",
+                  "type": "number"
+                },
+                "query": {
+                  "description": "Partial query to autocomplete (e.g. \"black dr\").",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "query"
+              ],
+              "type": "object"
+            },
+            "name": "getSearchSuggestions"
+          },
+          {
+            "description": "Search the product catalog and return the matching products. Each result is a product record whose fields vary by customer configuration. Use the product's unique identifier, usually `objectID` or the `id`-like field present on the returned record, when calling `addToCart`.",
+            "inputSchema": {
+              "properties": {
+                "facets": {
+                  "description": "Facets to include in the response (e.g. [\"brand\", \"color\"], or [\"*\"] for all facetable fields).",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "filters": {
+                  "description": "Algolia filter string (e.g. \"brand:Nike\", \"price < 100\", \"color:blue AND in_stock:true\"). Field names are case-sensitive and specific to this index. `facets: [\"*\"]` (or a prior result's `facets`) lists the facetable fields \u2014 a useful hint, though numeric and filter-only attributes can be valid filters without appearing there. Unrecognized fields are flagged in the result's `filterWarnings`.",
+                  "type": "string"
+                },
+                "hitsPerPage": {
+                  "description": "Results per page (default: 10).",
+                  "type": "number"
+                },
+                "page": {
+                  "description": "Page number, 1-indexed (default: 1).",
+                  "minimum": 1,
+                  "type": "number"
+                },
+                "query": {
+                  "description": "Search query (e.g. \"black dress\").",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "name": "searchProducts"
+          }
+        ]
+      },
+      {
+        "name": "shopify",
+        "config": {},
+        "tools": [
+          {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "description": "Get the current shopping cart as the raw Shopify /cart.json envelope. Each entry in items carries a key (pass to removeFromCart) and variant_id; prices are integer cents; currency names the currency.",
+            "inputSchema": {
+              "properties": {},
+              "required": [],
+              "type": "object"
+            },
+            "name": "getCart"
+          },
+          {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "description": "Get product details by handle (the URL slug). Returns the raw Shopify product object (title, variants with variant IDs for addToCart, prices in integer cents, images, options, description). If the product is sold as a subscription (Subscribe & Save), each variant also carries selling_plan_allocations[]; pass an allocation's selling_plan_id to addToCart as sellingPlan to add it as a subscription.",
+            "inputSchema": {
+              "properties": {
+                "handle": {
+                  "description": "The product handle (URL slug), e.g. \"blue-t-shirt\". Required, non-empty.",
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "handle"
+              ],
+              "type": "object"
+            },
+            "name": "getProduct"
+          },
+          {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "description": "Get \"related\" or \"complementary\" product recommendations for a seed product, using Shopify's built-in recommendations. Returns the Shopify recommendations envelope \u2014 { products: [...] }, an array of fully-hydrated product objects, each with the same fields as a getProduct product (title, handle, price, variants, images). Requires the numeric product ID (NOT the handle): source it from the \"id\" field of a getProduct envelope or a searchProducts result.",
+            "inputSchema": {
+              "properties": {
+                "intent": {
+                  "description": "Which kind of recommendations to return (default: \"related\").",
+                  "enum": [
+                    "related",
+                    "complementary"
+                  ],
+                  "type": "string"
+                },
+                "limit": {
+                  "description": "Max recommendations to return (default: 5, max: 10).",
+                  "maximum": 10,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "productId": {
+                  "description": "The numeric Shopify product ID as a string (e.g. \"7891234567890\"), taken from the \"id\" field returned by getProduct or searchProducts. Required, non-empty.",
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "productId"
+              ],
+              "type": "object"
+            },
+            "name": "getRecommendations"
+          },
+          {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "description": "Search for products using Shopify predictive search. Returns the raw Shopify suggest payload. An empty or whitespace-only query returns empty results without hitting the network. Use getProduct with a handle for full variant details.",
+            "inputSchema": {
+              "properties": {
+                "limit": {
+                  "description": "Max results to return (default: 5, max: 10).",
+                  "maximum": 10,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "query": {
+                  "description": "The search query.",
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "query"
+              ],
+              "type": "object"
+            },
+            "name": "searchProducts"
+          }
+        ]
+      },
+      {
+        "name": "shopify-storefront",
+        "config": {
+          "shopDomain": "vuori-clothing.myshopify.com",
+          "apiVersion": "2024-10",
+          "articleBlogs": [
+            "default"
+          ]
+        },
+        "tools": [
+          {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "description": "Get the full text of one blog article by its handle (URL slug), returned as plain text plus title, url, author, and publish date. Optionally pass the `blog` handle to disambiguate; otherwise the store's configured blogs are searched. Use this to answer a specific question from an article's content \u2014 but prefer navigating the shopper to the `url` for the full experience rather than pasting long passages into chat.",
+            "inputSchema": {
+              "properties": {
+                "blog": {
+                  "description": "Optional blog handle (e.g. \"health\") to look in. If omitted, the configured blogs are searched.",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "handle": {
+                  "description": "The article handle (URL slug), e.g. \"how-to-grow-a-beard-faster-our-best-tips\". Required, non-empty.",
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "handle"
+              ],
+              "type": "object"
+            },
+            "name": "getArticle"
+          },
+          {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "description": "Get the current shopping cart as the raw Shopify Storefront cart. Each line in lines.nodes carries its id (pass to removeFromCart) and its merchandise (the variant \u2014 its id is the addToCart variant ID). Money values are amount + currencyCode pairs (e.g. cost.totalAmount); checkoutUrl links to checkout. When no cart exists yet or a prior cart has expired, returns { empty: true, note } \u2014 the note distinguishes the two cases.",
+            "inputSchema": {
+              "properties": {},
+              "required": [],
+              "type": "object"
+            },
+            "name": "getCart"
+          },
+          {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "description": "Get full details for a single product by its handle (URL slug), including each of its purchasable variants. Use this to resolve a product down to the specific variant a customer wants. Every variant carries an `id` \u2014 a Shopify variant gid \u2014 and that id is the value addToCart takes verbatim. If a variant is sold as a subscription (Subscribe & Save), it also carries `sellingPlanAllocations.nodes[].sellingPlan.id` \u2014 pass that id to addToCart as `sellingPlanId` to add it as a subscription.",
+            "inputSchema": {
+              "properties": {
+                "handle": {
+                  "description": "The product handle (URL slug), e.g. \"kore-short-ink\". Required, non-empty.",
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "handle"
+              ],
+              "type": "object"
+            },
+            "name": "getProduct"
+          },
+          {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "description": "Get products recommended for a given product \u2014 \"you might also like\" (related) or items that pair well with it (complementary). Seed it with a product handle (URL slug) sourced from getProduct or searchProducts. Returns up to 10 product summaries in the same shape as searchProducts; call getProduct on any result handle to resolve it to its variants.",
+            "inputSchema": {
+              "properties": {
+                "handle": {
+                  "description": "The seed product handle (URL slug), e.g. \"kore-short-ink\", sourced from getProduct or searchProducts. Required, non-empty.",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "intent": {
+                  "description": "Recommendation type: \"related\" (similar / you-might-also-like) or \"complementary\" (pairs well with). Default \"related\".",
+                  "enum": [
+                    "related",
+                    "complementary"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "handle"
+              ],
+              "type": "object"
+            },
+            "name": "getRecommendations"
+          },
+          {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "description": "Search the store's blog / editorial content \u2014 buying guides, product comparisons, how-tos, and brand stories. Returns matching articles with title, url, excerpt, publish date, and author. Prefer navigating the shopper to an article's `url` (with the core navigate tool) over pasting its body into chat; call getArticle if you need the full text to answer a specific question. Omit the query to get the most recent posts. Covers the blogs configured for this store. Note: `excerpt` is empty when the author didn't write one \u2014 use getArticle if you need the body to judge relevance. If the response includes `unavailableBlogs`, some content couldn't be loaded right now \u2014 say so rather than telling the shopper it doesn't exist.",
+            "inputSchema": {
+              "properties": {
+                "limit": {
+                  "description": "Max articles to return (default: 5, max: 10).",
+                  "maximum": 10,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "query": {
+                  "description": "The search query. Optional \u2014 omit / leave empty to get the most recent articles.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "name": "searchArticles"
+          },
+          {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "description": "Search the Shopify storefront catalog for products matching a query. An omitted, empty, or whitespace-only query returns no results without making a network request. Each result is a product summary; call getProduct with a product handle to resolve one down to its variants and the variant gid that addToCart requires.",
+            "inputSchema": {
+              "properties": {
+                "limit": {
+                  "description": "Max results to return (default: 10, max: 20).",
+                  "maximum": 20,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "query": {
+                  "description": "The search query. Optional \u2014 empty / whitespace-only returns empty results.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "name": "searchProducts"
+          }
+        ]
+      }
+    ],
+    "core": {
+      "tools": [
+        {
+          "description": "Click an element on the page. Identify it by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Errors if neither is given or the element cannot be found.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector (e.g. \"#add-to-cart\"). Use only when you do not have a handle. First match is clicked.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "name": "clickElement"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": "Return detailed information about one element, identified by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Includes its accessible name and how it was derived, role, all attributes, visibility and interaction state, position, the region it belongs to, its associated label, nearby interactive controls, and a summary of its children. Use this to confirm you have the right element before acting on it.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector. Use only when you do not have a handle.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "name": "describeElement"
+        },
+        {
+          "description": "Enter a value into a text input, textarea, or contenteditable element. Identify the element by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. For checkboxes, radios, and buttons use clickElement instead.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector. Use only when you do not have a handle.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "value": {
+                "description": "The text to enter. An empty string clears the field.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "value"
+            ],
+            "type": "object"
+          },
+          "name": "fillInput"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": "Search the current page for elements matching any combination of criteria, and return a ranked list of compact descriptors \u2014 each with a `ref` handle you can pass to scrollToElement, highlightElement, or clickElement. Combine criteria to narrow results (e.g. category \"input\" + text \"promo\"). Results are visible elements by default, ranked by how well they match \u2014 NOT by where they sit on screen. Each result reports whether it is currently in view (state.inViewport); when the element you want is not in view, call scrollToElement with its handle to bring it on-screen before highlighting or clicking. Prefer this over guessing CSS selectors.",
+          "inputSchema": {
+            "properties": {
+              "attributes": {
+                "description": "Match attributes by substring, e.g. {\"placeholder\":\"code\",\"type\":\"text\"}. An empty value matches presence only.",
+                "type": "object"
+              },
+              "category": {
+                "description": "High-level element bucket. \"clickable\" also surfaces heuristically-detected click targets (divs/spans with click affordances).",
+                "enum": [
+                  "input",
+                  "button",
+                  "link",
+                  "image",
+                  "heading",
+                  "landmark",
+                  "media",
+                  "control",
+                  "clickable"
+                ],
+                "type": "string"
+              },
+              "inViewportOnly": {
+                "description": "Only elements currently in the viewport. Default false.",
+                "type": "boolean"
+              },
+              "limit": {
+                "description": "Max results (1\u201350). Default 20.",
+                "type": "number"
+              },
+              "matchMode": {
+                "description": "How `text` matches. Default \"fuzzy\" (lexical recall). Use \"exact\" once you know the literal on-page string.",
+                "enum": [
+                  "fuzzy",
+                  "exact"
+                ],
+                "type": "string"
+              },
+              "near": {
+                "description": "A handle (from a prior findElements) \u2014 restrict to elements spatially or structurally near it.",
+                "type": "string"
+              },
+              "offset": {
+                "description": "Skip the first N matches (paging). Default 0.",
+                "type": "number"
+              },
+              "role": {
+                "description": "ARIA role: button, link, textbox, checkbox, radio, img, heading, etc.",
+                "type": "string"
+              },
+              "text": {
+                "description": "Free-text match over the element's whole textual surface \u2014 accessible name, own text, placeholder, aria-label, alt, title, value, and the associated <label>. Lexical and recall-oriented: case/accent-insensitive, word-order-independent, partial words allowed. Try synonyms across separate calls (e.g. \"discount\" then \"promo\"); this does NOT expand synonyms for you.",
+                "type": "string"
+              },
+              "visibleOnly": {
+                "description": "Only visible elements. Default true.",
+                "type": "boolean"
+              },
+              "within": {
+                "description": "A handle, or a landmark/section name (e.g. \"Order Summary\") \u2014 restrict the search to that subtree.",
+                "type": "string"
+              }
+            },
+            "required": [],
+            "type": "object"
+          },
+          "name": "findElements"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": "Return metadata about the current page: url, canonicalUrl, title, meta tags (description, keywords, Open Graph, Twitter Card, etc.), and parsed JSON-LD structured-data blocks. Use this to understand what page the user is on.",
+          "inputSchema": {
+            "properties": {},
+            "required": [],
+            "type": "object"
+          },
+          "name": "getPageContext"
+        },
+        {
+          "annotations": {
+            "readOnlyHint": true
+          },
+          "description": "Return the structural skeleton of the current page: landmark regions (header, nav, main, footer, and labeled sections), the heading outline, the forms present, and a count of interactive elements by category. Use this first to understand how the page is organized before searching for specific elements with findElements. Landmarks and forms include a handle you can pass to findElements' `within` to scope a search.",
+          "inputSchema": {
+            "properties": {},
+            "required": [],
+            "type": "object"
+          },
+          "name": "getPageOutline"
+        },
+        {
+          "description": "Draw the user's attention to an element on the page (a temporary visual emphasis). Identify it by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Errors if neither is given or the element cannot be found.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector (e.g. \"#promo-banner\"). Use only when you do not have a handle. First match is highlighted.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "name": "highlightElement"
+        },
+        {
+          "description": "Navigate the current page to a URL on the same site. Accepts an absolute URL or a path (e.g. \"/cart\"). Same-origin only \u2014 cross-origin navigation is rejected. If the URL already matches the current page, navigation is skipped. Returns the URLs navigated from and to, plus a `navigated` flag (false when skipped, with a `reason` explaining why).",
+          "inputSchema": {
+            "properties": {
+              "url": {
+                "description": "An absolute same-origin URL (e.g. \"https://shop.example.com/cart\") or a path (e.g. \"/cart\").",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "url"
+            ],
+            "type": "object"
+          },
+          "name": "navigateToUrl"
+        },
+        {
+          "description": "Scroll an element into view. Identify it by a `ref` handle from findElements (preferred) or a CSS `selector`; pass at least one. Use this when a findElements result reports state.inViewport: false, to bring it on-screen before highlighting or clicking. Errors if neither is given or the element cannot be found.",
+          "inputSchema": {
+            "properties": {
+              "ref": {
+                "description": "A handle from findElements (e.g. \"el-12\"). Preferred \u2014 pass this when you have one.",
+                "minLength": 1,
+                "type": "string"
+              },
+              "selector": {
+                "description": "A CSS selector (e.g. \"#reviews\"). Use only when you do not have a handle. First match is scrolled into view.",
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "name": "scrollToElement"
+        }
+      ]
+    },
+    "custom": []
+  }
+}

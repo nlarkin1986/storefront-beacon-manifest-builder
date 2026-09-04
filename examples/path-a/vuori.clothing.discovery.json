@@ -1,0 +1,304 @@
+{
+  "domain": "vuoriclothing.com",
+  "origin": "https://www.vuoriclothing.com",
+  "platform": "shopify_headless_next",
+  "platform_host": "checkout.vuoriclothing.com",
+  "myshopify": "vuori-clothing.myshopify.com",
+  "demo_ready": true,
+  "discovered_at": "2026-09-03T20:27:12.570921-05:00",
+  "surfaces": {
+    "storefront_mcp": "live",
+    "ucp_mcp": "missing",
+    "webmcp": "script_present",
+    "notes": "POST https://checkout.vuoriclothing.com/api/mcp tools/list \u2192 search_shop_policies_and_faqs. www /api/mcp \u2192 405."
+  },
+  "secrets": {
+    "algolia": {
+      "appId": "P2MLBKGFDS",
+      "apiKey": "16465d97b4cd7959fda8792d6d711582",
+      "indexName": "us_products",
+      "suggestionsIndexName": "us_products_query_suggestions"
+    },
+    "shopify": {
+      "storeDomain": "checkout.vuoriclothing.com",
+      "shopId": "2240086074"
+    },
+    "shopify_storefront": {
+      "shopDomain": "vuori-clothing.myshopify.com",
+      "apiVersion": "2024-10",
+      "token": null,
+      "token_note": "Scraped storefrontApiToken 59a34a3793dee9bc972b49eec24c54ab returns 401; unauthenticated GraphQL reads + cartCreate succeed."
+    },
+    "yotpo": {
+      "siteId": "O3FUF9llaC6Iq8y7ds1Y2Q",
+      "reviews_live": false,
+      "note": "Loyalty/widgets loader only; Reviews API Account not found"
+    }
+  },
+  "tools": [
+    {
+      "tool": "search_catalog",
+      "confidence": "high",
+      "source": "rest:algolia",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "POST",
+        "url": "https://P2MLBKGFDS-dsn.algolia.net/1/indexes/*/queries",
+        "headers": {
+          "Content-Type": "application/json",
+          "X-Algolia-Application-Id": "P2MLBKGFDS",
+          "X-Algolia-API-Key": "16465d97b4cd7959fda8792d6d711582"
+        },
+        "body": {
+          "requests": [
+            {
+              "indexName": "us_products",
+              "params": "query={q}&hitsPerPage=8"
+            }
+          ]
+        }
+      },
+      "example_keys": [
+        "hits",
+        "nbHits",
+        "objectID",
+        "handle",
+        "title",
+        "variants",
+        "review_rating",
+        "review_rating_count",
+        "product_type"
+      ],
+      "gladly_use": "Sidekick product search. Return title, handle, price band, rating.",
+      "notes": "Live 200 on 2026-09-03. q=short \u2192 4931 hits. AppId must be uppercase P2MLBKGFDS."
+    },
+    {
+      "tool": "search_suggestions",
+      "confidence": "high",
+      "source": "rest:algolia",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "POST",
+        "url": "https://P2MLBKGFDS-dsn.algolia.net/1/indexes/*/queries",
+        "headers": {
+          "Content-Type": "application/json",
+          "X-Algolia-Application-Id": "P2MLBKGFDS",
+          "X-Algolia-API-Key": "16465d97b4cd7959fda8792d6d711582"
+        },
+        "body": {
+          "requests": [
+            {
+              "indexName": "us_products_query_suggestions",
+              "params": "query={q}&hitsPerPage=5"
+            }
+          ]
+        }
+      },
+      "example_keys": [
+        "hits",
+        "query",
+        "objectID",
+        "nbHits"
+      ],
+      "gladly_use": "Autocomplete for search box.",
+      "notes": "Live 200. q=short \u2192 2085 suggestion hits."
+    },
+    {
+      "tool": "get_product",
+      "confidence": "high",
+      "source": "rest:shopify_ajax",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "GET",
+        "url": "https://checkout.vuoriclothing.com/products/{handle}.js"
+      },
+      "example_keys": [
+        "id",
+        "title",
+        "handle",
+        "variants",
+        "price",
+        "available",
+        "images",
+        "tags"
+      ],
+      "gladly_use": "PDP detail and variant IDs for add-to-cart.",
+      "notes": "Live 200 for short-sleeve-lux-tee-black. Alternate: Storefront GraphQL product(handle) on vuori-clothing.myshopify.com/api/2024-10/graphql.json (no token)."
+    },
+    {
+      "tool": "list_collections",
+      "confidence": "high",
+      "source": "rest:algolia_facets",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "POST",
+        "url": "https://P2MLBKGFDS-dsn.algolia.net/1/indexes/*/queries",
+        "headers": {
+          "Content-Type": "application/json",
+          "X-Algolia-Application-Id": "P2MLBKGFDS",
+          "X-Algolia-API-Key": "16465d97b4cd7959fda8792d6d711582"
+        },
+        "body": {
+          "requests": [
+            {
+              "indexName": "us_products",
+              "params": "query=&hitsPerPage=0&facets=[\"product_type\",\"named_tags.gender\",\"named_tags.category\"]"
+            }
+          ]
+        }
+      },
+      "example_keys": [
+        "facets",
+        "product_type",
+        "named_tags.gender",
+        "named_tags.category"
+      ],
+      "gladly_use": "Browse mens/womens and product types (Shorts, Tops, \u2026).",
+      "notes": "Live facet counts e.g. Shorts 1784, womens 6407."
+    },
+    {
+      "tool": "get_recommendations",
+      "confidence": "high",
+      "source": "rest:shopify_ajax",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "GET",
+        "url": "https://checkout.vuoriclothing.com/recommendations/products.json",
+        "query": {
+          "product_id": "{product_id}",
+          "limit": "5",
+          "intent": "related"
+        }
+      },
+      "example_keys": [
+        "products",
+        "id",
+        "handle",
+        "title",
+        "variants"
+      ],
+      "gladly_use": "You might also like.",
+      "notes": "Live 200 related for product_id=7769050251367. Also Storefront productRecommendations."
+    },
+    {
+      "tool": "get_cart",
+      "confidence": "high",
+      "source": "rest:shopify_ajax",
+      "auth": "session",
+      "transport": "rest",
+      "call": {
+        "method": "GET",
+        "url": "https://checkout.vuoriclothing.com/cart.js"
+      },
+      "example_keys": [
+        "token",
+        "item_count",
+        "items",
+        "total_price",
+        "currency"
+      ],
+      "gladly_use": "Show current cart.",
+      "notes": "Live 200 empty cart in anonymous curl session. Storefront cartCreate also live without token."
+    },
+    {
+      "tool": "update_cart",
+      "confidence": "medium",
+      "source": "rest:shopify_ajax",
+      "auth": "session",
+      "transport": "rest",
+      "call": {
+        "method": "POST",
+        "url": "https://checkout.vuoriclothing.com/cart/add.js",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": "{variant_id}",
+          "quantity": 1
+        }
+      },
+      "example_keys": [
+        "id",
+        "quantity",
+        "variant_id",
+        "key"
+      ],
+      "gladly_use": "Add a variant to cart (API session or forwarded shopper cookies).",
+      "notes": "Path proven (GET\u2192400 missing params). Did not POST add during discovery. Prefer WebMCP/demo tab for shopper-cart parity."
+    },
+    {
+      "tool": "search_policies",
+      "confidence": "high",
+      "source": "mcp:shopify_storefront",
+      "auth": "none",
+      "transport": "mcp",
+      "call": {
+        "method": "POST",
+        "url": "https://checkout.vuoriclothing.com/api/mcp",
+        "headers": {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        "body": {
+          "jsonrpc": "2.0",
+          "id": 1,
+          "method": "tools/call",
+          "params": {
+            "name": "search_shop_policies_and_faqs",
+            "arguments": {
+              "query": "{q}"
+            }
+          }
+        }
+      },
+      "example_keys": [
+        "question",
+        "answer"
+      ],
+      "gladly_use": "Returns / shipping / hours FAQs.",
+      "notes": "Live 200. tools/list exposes only this one MCP tool."
+    },
+    {
+      "tool": "get_product_reviews_summary",
+      "confidence": "medium",
+      "source": "rest:algolia",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "POST",
+        "url": "https://P2MLBKGFDS-dsn.algolia.net/1/indexes/*/queries",
+        "headers": {
+          "Content-Type": "application/json",
+          "X-Algolia-Application-Id": "P2MLBKGFDS",
+          "X-Algolia-API-Key": "16465d97b4cd7959fda8792d6d711582"
+        },
+        "body": {
+          "requests": [
+            {
+              "indexName": "us_products",
+              "params": "query={handle_or_title}&hitsPerPage=1&attributesToRetrieve=[\"objectID\",\"handle\",\"title\",\"review_rating\",\"review_rating_count\"]"
+            }
+          ]
+        }
+      },
+      "example_keys": [
+        "review_rating",
+        "review_rating_count"
+      ],
+      "gladly_use": "Star average + count when enriching get_product.",
+      "notes": "Yotpo Reviews API Account not found for siteId O3FUF9llaC6Iq8y7ds1Y2Q (Loyalty). Use Algolia aggregates instead."
+    }
+  ],
+  "gaps": [
+    "yotpo.getProductReviews / classic widget API \u2014 Account not found",
+    "shopify-storefront.getProductMetafields \u2014 ACCESS_DENIED without metafields scope token",
+    "www.vuoriclothing.com Shopify Ajax \u2014 404 (Next headless)",
+    "core.* DOM tools \u2014 not API-only",
+    "lookup_order / create_return \u2014 not in public probes"
+  ]
+}

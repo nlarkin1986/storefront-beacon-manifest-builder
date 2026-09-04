@@ -1,0 +1,34 @@
+{
+  "domain": "example.com",
+  "generatedAt": "RFC3339",
+  "platform_guess": "",
+  "mcp": "missing|live|partial",
+  "demo_ready": true,
+  "demo_ready_quality": "strong|commons|bv_fallback|thin_html",
+  "needs_custom": "none|fork|new_bff|held_bot_wall",
+  "wall_class": "none|akamai_a32|akamai_bvm|datadome|ge401001|imperva",
+  "egress_fragile": false,
+  "probe_headers": {
+    "ua": "chrome_desktop|googlebot",
+    "sec_ch": true,
+    "notes": ""
+  },
+  "commons_bound": [],
+  "custom_intended": [],
+  "tools": {
+    "search_catalog": { "confidence": "high|medium|low|blocked", "binding": "" },
+    "get_product": { "confidence": "", "binding": "" },
+    "list_collections": { "confidence": "", "binding": "" },
+    "search_policies": { "confidence": "", "binding": "" },
+    "get_cart": { "confidence": "needs_auth", "binding": "" },
+    "update_cart": { "confidence": "needs_auth", "binding": "" },
+    "lookup_order": { "confidence": "needs_auth", "binding": "" },
+    "create_return": { "confidence": "needs_auth", "binding": "" }
+  },
+  "pack_holes": [],
+  "artifacts": {
+    "manifest": "/workspace/{domain}.manifest.json",
+    "beacon": "/workspace/{domain}.beacon-manifest.json",
+    "report": "/workspace/{domain}.report.md"
+  }
+}

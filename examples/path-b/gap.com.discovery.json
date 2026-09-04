@@ -1,0 +1,317 @@
+{
+  "domain": "gap.com",
+  "origin": "https://www.gap.com",
+  "apex": "gap.com",
+  "siblings_probed": [
+    "https://www.gap.com",
+    "https://gap.com",
+    "https://www.gapfactory.com",
+    "https://api.gap.com",
+    "https://api.gapfactory.com",
+    "https://api.prod.gapinc.com",
+    "https://secure-www.gap.com"
+  ],
+  "platform": "gap_custom_next",
+  "platform_host": "api.gap.com",
+  "platform_notes": "Gap Inc onesite Next.js MFE (static_content/onesitecategory). Legacy SFCC-style .do routes remain in sitemaps/robots. Public commerce APIs on Apigee api.gap.com. Bloomreach configured (core/suggest.dxpapi.com) but account/auth keys not exposed in static JS ($undefined in SSR). Search vendor path ProductSearch also points at api.gap.com.",
+  "demo_ready": true,
+  "discovered_at": "2026-09-03T20:45:00-05:00",
+  "surfaces": {
+    "storefront_mcp": "missing",
+    "ucp_mcp": "missing",
+    "webmcp": "unknown",
+    "mcp_probe": {
+      "https://www.gap.com/api/mcp": "503",
+      "https://www.gap.com/api/ucp/mcp": "503",
+      "https://www.gap.com/mcp": "503",
+      "/.well-known/mcp.json": "404",
+      "/llms.txt": "200_but_homepage_html_spa_not_llms"
+    }
+  },
+  "tools": [
+    {
+      "tool": "search_catalog",
+      "confidence": "high",
+      "source": "rest:api.gap.com/commerce/search/products/v2/cc",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "GET",
+        "url": "https://api.gap.com/commerce/search/products/v2/cc?keyword={q}&brand=gap",
+        "headers": {
+          "Accept": "application/json",
+          "X-Client-Application-Name": "Ecom"
+        }
+      },
+      "example_keys": [
+        "products",
+        "products[].styleId",
+        "products[].styleName",
+        "products[].styleColors",
+        "products[].styleColors[].ccId",
+        "products[].styleColors[].effectivePrice",
+        "products[].styleColors[].regularPrice",
+        "products[].styleColors[].inventoryStatus",
+        "facets",
+        "pagination",
+        "totalColors",
+        "categories"
+      ],
+      "observed": {
+        "query": "jeans",
+        "http": 200,
+        "totalColors": "209",
+        "sample_styleName": "Low Rise '90s Loose Easy Crop Jeans"
+      },
+      "gladly_use": "Sidekick product questions and Chat quick product search"
+    },
+    {
+      "tool": "get_product",
+      "confidence": "high",
+      "source": "rest:api.gap.com/catalog_products/v3/products",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "GET",
+        "url": "https://api.gap.com/catalog_products/v3/products?product_id={pid}&market=US&brand=GAP",
+        "headers": {
+          "Accept": "application/vnd.snake+json",
+          "X-Client-Application-Name": "Ecom"
+        }
+      },
+      "alt_calls": [
+        {
+          "note": "Lightweight card/price/inventory by customer-choice id",
+          "method": "GET",
+          "url": "https://api.gap.com/catalog_products/v3/cards?market=US&locale=en_US&product_ids=GAP:{pid}&include_inactive=true",
+          "headers": {
+            "Accept": "application/vnd.snake+json",
+            "X-Client-Application-Name": "Ecom"
+          }
+        },
+        {
+          "note": "Same STYLE payload via omni alias",
+          "method": "GET",
+          "url": "https://api.gap.com/v2/catalog_omni_products/v3/products?product_id={pid}&market=US&brand=GAP",
+          "headers": {
+            "Accept": "application/vnd.snake+json",
+            "X-Client-Application-Name": "Ecom"
+          }
+        },
+        {
+          "note": "HTML PDP also embeds STYLE JSON + schema.org Product (pid query)",
+          "method": "GET",
+          "url": "https://www.gap.com/browse/product.do?pid={pid}"
+        }
+      ],
+      "example_keys": [
+        "brand",
+        "market",
+        "response_type",
+        "input_id",
+        "styles",
+        "styles.*.description",
+        "styles.*.copy_headers",
+        "styles.*.rating",
+        "customer_choices",
+        "variants",
+        "variant_definition"
+      ],
+      "observed": {
+        "pid": "130046042",
+        "http": 200,
+        "description": "Skinny Ankle Pants",
+        "rating": {
+          "average_rating": 4.51,
+          "rating_count": 2406
+        }
+      },
+      "reviews_enrichment": {
+        "provider": "bazaarvoice",
+        "passkey": "caioxiIaIKPDx7QHLoQ1npIVNBmwTauM2ZKe6TzsD2t8A",
+        "call": {
+          "method": "GET",
+          "url": "https://api.bazaarvoice.com/data/reviews.json?apiversion=5.4&passkey=caioxiIaIKPDx7QHLoQ1npIVNBmwTauM2ZKe6TzsD2t8A&Filter=ProductId:{styleId}&Stats=Reviews&Limit=8"
+        },
+        "observed_http": 200,
+        "note": "ProductId is style id (e.g. 130046), not full cc pid. Not a separate Gladly canonical tool."
+      },
+      "gladly_use": "PDP detail, variants, price, availability, fabric/fit copy"
+    },
+    {
+      "tool": "list_collections",
+      "confidence": "high",
+      "source": "rest:api.gap.com/commerce/search/products/v2/cc?cid= + sitemap divisions",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "GET",
+        "url": "https://api.gap.com/commerce/search/products/v2/cc?cid={cid}&brand=gap&pageSize=8",
+        "headers": {
+          "Accept": "application/json",
+          "X-Client-Application-Name": "Ecom"
+        }
+      },
+      "collection_index": {
+        "method": "GET",
+        "url": "https://www.gap.com/native-division-sitemap.xml",
+        "observed_divisions": [
+          {
+            "name": "Women",
+            "cid": "5643",
+            "url": "https://www.gap.com/browse/women?cid=5643"
+          },
+          {
+            "name": "Men",
+            "cid": "5063",
+            "url": "https://www.gap.com/browse/men?cid=5063"
+          },
+          {
+            "name": "GapKids",
+            "cid": "6170",
+            "url": "https://www.gap.com/browse/gapkids?cid=6170"
+          },
+          {
+            "name": "Baby and Toddler",
+            "cid": "1137869",
+            "url": "https://www.gap.com/browse/baby-and-toddler?cid=1137869"
+          },
+          {
+            "name": "Boys",
+            "cid": "1137867",
+            "url": "https://www.gap.com/browse/boys?cid=1137867"
+          },
+          {
+            "name": "Girls",
+            "cid": "1137865",
+            "url": "https://www.gap.com/browse/girls?cid=1137865"
+          },
+          {
+            "name": "Sale",
+            "cid": "1156863",
+            "url": "https://www.gap.com/browse/sale?cid=1156863"
+          },
+          {
+            "name": "Gift Shop",
+            "cid": "83061",
+            "url": "https://www.gap.com/browse/gift-shop?cid=83061"
+          }
+        ]
+      },
+      "example_keys": [
+        "categories",
+        "categories[].categoryId",
+        "categories[].categoryName",
+        "categories[].ccList",
+        "products",
+        "facets",
+        "totalColors",
+        "pagination"
+      ],
+      "observed": {
+        "cid": "5643",
+        "http": 200,
+        "categoryName": "Women",
+        "totalColors": "2708"
+      },
+      "gladly_use": "Browse / nav by division or category cid"
+    },
+    {
+      "tool": "search_policies",
+      "confidence": "high",
+      "source": "html:customer-service policy pages",
+      "auth": "none",
+      "transport": "html",
+      "call": {
+        "method": "GET",
+        "url": "https://www.gap.com/customer-service/how-to-return-exchange-items?cid=81264",
+        "headers": {
+          "Accept": "text/html"
+        }
+      },
+      "policy_urls": {
+        "returns_how_to": "https://www.gap.com/customer-service/how-to-return-exchange-items?cid=81264",
+        "return_policy_faq": "https://www.gap.com/customer-service/return-policy-faq?cid=1192370",
+        "shipping": "https://www.gap.com/customer-service/shipping-handling-information?cid=1192375",
+        "order_status_help": "https://www.gap.com/customer-service/order-status?cid=81266",
+        "customer_service_faqs": "https://www.gap.com/customer-service/customer-service-faqs?cid=2136",
+        "international_orders": "https://www.gap.com/customer-service/international-orders?cid=81267",
+        "size_charts": "https://www.gap.com/customer-service/size-charts?cid=2103",
+        "contact_us": "https://www.gap.com/customer-service/contact-us?cid=81270",
+        "privacy": "https://corporate.gapinc.com/en-us/consumer-privacy-policy"
+      },
+      "example_keys": [
+        "title",
+        "html_body_text"
+      ],
+      "observed": {
+        "http": 200,
+        "title": "How to Return or Exchange Items | Gap",
+        "snippets": [
+          "Free Returns and Exchanges",
+          "30 Days to Return or Exchange"
+        ]
+      },
+      "gladly_use": "Returns, shipping, warranty/FAQ answers \u2014 fetch matching policy URL and summarize HTML",
+      "note": "/llms.txt is not a real llms manifest (returns SPA homepage HTML)."
+    }
+  ],
+  "gaps": [
+    {
+      "tool": "get_cart",
+      "reason": "needs_auth",
+      "hint": "api.gap.com/commerce/shopping-bags returns 401 Invalid access token without OIDC; internal host internal-azeus-ecom-api.live.prod.gap.com not publicly resolvable. Use Gladly/WebMCP with shopper cookies."
+    },
+    {
+      "tool": "update_cart",
+      "reason": "needs_auth",
+      "hint": "Do not write-probe in discovery; cart mutations need authenticated bag session."
+    },
+    {
+      "tool": "lookup_order",
+      "reason": "needs_auth",
+      "hint": "Order status help page is public HTML only; real WISMO needs Gladly Lookup Adaptor / customer account OIDC on api.gap.com."
+    },
+    {
+      "tool": "create_return",
+      "reason": "needs_auth",
+      "hint": "Return policy HTML is public; initiating a return needs authenticated App Platform / OMS."
+    },
+    {
+      "tool": "bloomreach_search",
+      "reason": "keys_not_in_static_bundle",
+      "hint": "engineEndpointConfiguration points at suggest.dxpapi.com / core.dxpapi.com but auth_key/account_id/domain_key not present in downloaded JS (PDSSearch/ProductSearch apikey=$undefined in SSR). ProductSearch REST on api.gap.com already covers catalog search."
+    }
+  ],
+  "noise_rejected": [
+    "s.go-mpulse.net / BOOMR_API_key (Akamai mPulse)",
+    "js-agent.newrelic.com / NREUM accountID",
+    "optimizely / tealium / metrics.gap.com",
+    "appsflyer / onelink.me",
+    "pixlee apiKey (UGC widget)",
+    "findmine.com (shop-the-set)",
+    "akamai bot manager paths /ZNFdjL-cf/",
+    "communication-preference email/sms registration APIs"
+  ],
+  "fingerprint": {
+    "signals": [
+      "next/_next/static/chunks (turbopack MFE)",
+      "mybrand: gap response header",
+      "x-e-dc: azeus",
+      "api.gap.com Apigee",
+      "legacy .do routes in robots/sitemaps",
+      "Bloomreach feature flags search-bloomreach / autosuggest-bloomreach",
+      "Bazaarvoice bv.js deployments/the-gap",
+      "TrueFit / PowerReviews flags present"
+    ],
+    "detector_packs_matched": [
+      "bazaarvoice"
+    ],
+    "detector_packs_partial": [
+      "sfcc (legacy .do only)",
+      "algolia (absent)",
+      "constructorio (absent)",
+      "yotpo (absent)"
+    ]
+  }
+}

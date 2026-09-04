@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/beacon-manifest.schema.json",
+  "title": "Demo Buddy / Chat SDK beacon-manifest",
+  "type": "object",
+  "required": [
+    "version",
+    "generatedAt",
+    "integrations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "1.0"
+    },
+    "generatedAt": {
+      "type": "string",
+      "minLength": 10
+    },
+    "integrations": {
+      "type": "object",
+      "required": [
+        "common",
+        "core",
+        "custom"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "common": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "config",
+              "tools"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "config": {
+                "type": "object"
+              },
+              "tools": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/tool"
+                }
+              }
+            }
+          }
+        },
+        "core": {
+          "type": "object",
+          "required": [
+            "tools"
+          ],
+          "properties": {
+            "tools": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/tool"
+              }
+            },
+            "config": {
+              "type": "object"
+            }
+          }
+        },
+        "custom": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "tools"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "bundleUrl": {
+                "type": "string"
+              },
+              "config": {
+                "type": "object"
+              },
+              "tools": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/tool"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "tool": {
+      "type": "object",
+      "required": [
+        "name",
+        "description",
+        "inputSchema"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "inputSchema": {
+          "type": "object"
+        },
+        "outputSchema": {
+          "type": "object"
+        },
+        "annotations": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

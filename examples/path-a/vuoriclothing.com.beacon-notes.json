@@ -1,0 +1,23 @@
+{
+  "domain": "vuoriclothing.com",
+  "demo_ready_quality": "strong",
+  "needs_custom": "none",
+  "sot": "/workspace/vuori.clothing.manifest.json",
+  "omit": {
+    "yotpo": "siteId O3FUF9\u2026 is Loyalty/widgets; Reviews API Account not found \u2014 use Algolia review_rating fields",
+    "cart_mutations": "addToCart/removeFromCart omitted (session-scoped; Cx Audit no-cart rule)",
+    "showCheckout": "omitted \u2014 no core.config.checkout",
+    "getProductMetafields": "ACCESS_DENIED without unauthenticated_read_metafields",
+    "shopify.storeDomain": "invalid ManifestConfig key \u2014 Ajax uses page origin / checkout host at runtime"
+  },
+  "commons": [
+    "algolia",
+    "shopify",
+    "shopify-storefront"
+  ],
+  "tool_counts": {
+    "algolia": 2,
+    "shopify": 4,
+    "shopify-storefront": 6
+  }
+}

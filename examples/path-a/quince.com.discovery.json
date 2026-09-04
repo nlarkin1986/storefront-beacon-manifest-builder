@@ -1,0 +1,209 @@
+{
+  "domain": "quince.com",
+  "origin": "https://www.quince.com",
+  "platform": "next_headless",
+  "platform_host": "api.onequince.com",
+  "demo_ready": true,
+  "discovered_at": "2026-09-03T18:35:00-05:00",
+  "surfaces": {
+    "storefront_mcp": "missing",
+    "ucp_mcp": "missing",
+    "webmcp": "unknown"
+  },
+  "tools": [
+    {
+      "tool": "search_catalog",
+      "confidence": "high",
+      "source": "rest:algolia",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "POST",
+        "url": "https://K81D2WQH9L-dsn.algolia.net/1/indexes/quince_product_color_index_v1/query",
+        "headers": {
+          "Content-Type": "application/json",
+          "X-Algolia-Application-Id": "K81D2WQH9L",
+          "X-Algolia-API-Key": "3f306f13f22cfa9128f18019ba17dc34"
+        },
+        "body": {
+          "query": "{q}",
+          "hitsPerPage": 8
+        }
+      },
+      "example_keys": [
+        "hits",
+        "nbHits",
+        "product_id",
+        "quince_product_id",
+        "product_handle",
+        "product_title",
+        "description",
+        "min_price",
+        "max_price",
+        "in_stock",
+        "sizes",
+        "color",
+        "department"
+      ],
+      "gladly_use": "Sidekick product questions. Ask for a product or category and return name, price, handle, and stock.",
+      "notes": "Live 200 on 2026-09-03. Query cashmere returned 1336 hits. Use quince_product_id as productIds for get_product. Search-only Algolia key is published in storefront NEXT_DATA."
+    },
+    {
+      "tool": "get_product",
+      "confidence": "high",
+      "source": "rest:bff-service",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "GET",
+        "url": "https://api-prod-public.onequince.com/bff-service/v1/product/get-product-cards",
+        "query": {
+          "productIds": "{quince_product_id}"
+        }
+      },
+      "example_keys": [
+        "data",
+        "product",
+        "productId",
+        "relatedIds",
+        "title",
+        "slug",
+        "reviews",
+        "cardVariants",
+        "colorVariants",
+        "flags"
+      ],
+      "gladly_use": "Look up one product for variants, colors, ratings, and the shopper URL slug.",
+      "notes": "Live 200 for productIds=76 (Mongolian Cashmere Crewneck Sweater). Empty data [] if the id is missing. PDP JSON-LD Product/Offer also present on https://www.quince.com/{handle}."
+    },
+    {
+      "tool": "list_collections",
+      "confidence": "high",
+      "source": "rest:algolia_facets",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "POST",
+        "url": "https://K81D2WQH9L-dsn.algolia.net/1/indexes/quince_product_color_index_v1/query",
+        "headers": {
+          "Content-Type": "application/json",
+          "X-Algolia-Application-Id": "K81D2WQH9L",
+          "X-Algolia-API-Key": "3f306f13f22cfa9128f18019ba17dc34"
+        },
+        "body": {
+          "query": "",
+          "hitsPerPage": 0,
+          "facets": [
+            "business_department",
+            "department",
+            "category",
+            "sub_department"
+          ]
+        }
+      },
+      "example_keys": [
+        "facets",
+        "category",
+        "department",
+        "sub_department",
+        "business_department",
+        "nbHits"
+      ],
+      "gladly_use": "Show shopper-facing departments and categories so they can browse Women, Home, Kids, Men, and finer groups like Cashmere or Bedding.",
+      "notes": "Live 200. 16844 indexed color rows. Collection URLs also published at https://www.quince.com/sitemap_shop.xml (538 locs). First-party browse of one collection: GET https://api.onequince.com/sand-services/collection/v3?page=0&limit=5&collectionId={contentfulCollectionId}&pageType=GROUPED (200 for 2nCWEduqgXsYAjVn1Z7mqJ / Women)."
+    },
+    {
+      "tool": "get_cart",
+      "confidence": "medium",
+      "source": "rest:cart-service",
+      "auth": "session",
+      "transport": "rest",
+      "call": {
+        "method": "GET",
+        "url": "https://api-prod-public.onequince.com/cart-service/carts/active"
+      },
+      "example_keys": [
+        "timestamp",
+        "status",
+        "error",
+        "path"
+      ],
+      "gladly_use": "Read the shopper's current cart. Needs their storefront cart session, not a public datacenter call.",
+      "notes": "Path is real: GET returned 401 Unauthorized with path /cart-service/carts/active. Homepage cookies (q-cookie-id, REGION_ID) were not enough. Same 401 on api.onequince.com. JS also exposes GET /carts/{cartId}."
+    },
+    {
+      "tool": "update_cart",
+      "confidence": "medium",
+      "source": "js:cart-service",
+      "auth": "session",
+      "transport": "rest",
+      "call": {
+        "method": "POST",
+        "url": "https://api-prod-public.onequince.com/cart-service/carts/{cartId}/add-item",
+        "body": {
+          "variantId": "{variant_id}",
+          "quantity": 1
+        }
+      },
+      "example_keys": [
+        "timestamp",
+        "status",
+        "error",
+        "path"
+      ],
+      "gladly_use": "Add or change a cart line during a live shopper session. Do not call this from a server demo without their cart cookie.",
+      "notes": "Not write-probed. First-party JS documents POST /carts/${cartId}/add-item plus update-item-quantity, apply-discount-code. GET /cart-service/carts/add-item returned 403 Forbidden (path exists)."
+    },
+    {
+      "tool": "search_policies",
+      "confidence": "high",
+      "source": "rest:gladly_help_center",
+      "auth": "none",
+      "transport": "rest",
+      "call": {
+        "method": "GET",
+        "url": "https://quince.us-1.gladly.com/api/v1/orgs/Bq5O4FGeR6CHGQtaizG6gA/answers",
+        "query": {
+          "query": "{q}"
+        }
+      },
+      "example_keys": [
+        "bodyHtml",
+        "id",
+        "language",
+        "name"
+      ],
+      "gladly_use": "Answer shipping, returns, refunds, subscriptions, and other policy questions from Quince's published Help Center articles.",
+      "notes": "Live 200, 189 answers including Shipping Costs, Return Instructions, Bedding Returns, Subscription Terms. Org/brand from storefront localeConfig.gladlyHelpCenter. HTML policy pages also live: /faq, /shipping-returns ( /returns redirects here), /terms, /privacy-policy, /how-it-works."
+    }
+  ],
+  "gaps": [
+    {
+      "tool": "lookup_order",
+      "reason": "needs_auth",
+      "hint": "Gladly Lookup Adaptor / Customer Account / OMS. JS exposes /v2/customer/orders/ and api-prod-public.onequince.com/order-service. Public GETs 404'd; no guest order lookup bound. Storefront has enableFindMyOrder but that is an authenticated/app flow."
+    },
+    {
+      "tool": "create_return",
+      "reason": "needs_auth",
+      "hint": "Gladly App Platform / return-management-service. JS mentions https://api.onequince.com/return-management-service/api/v1/external. Public GET 404. Policy articles exist; do not claim a public return-create API."
+    }
+  ],
+  "noise_rejected": [
+    "mixpanel-prod.onequince.com",
+    "statsigapi.net",
+    "cdn.attn.tv",
+    "stylitics.com",
+    "google-analytics.com",
+    "facebook pixel",
+    "tiktok pixel",
+    "criteo",
+    "pinterest tag",
+    "linkedin pixel",
+    "ia.quince.com",
+    "stream.onequince.com/ia/publish/events",
+    "klarna",
+    "yotpo",
+    "hubspot"
+  ]
+}
