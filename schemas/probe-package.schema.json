@@ -2,9 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/nlarkin1986/storefront-beacon-manifest-builder/schemas/probe-package.schema.json",
   "title": "ProbePackage",
-  "description": "Evidence-only package from Demo Tools on-site scrape or Path B HTTP probe. Railway Manifest Builder re-binds beacon-manifest from this; draftBeacon is never SoT. Keys must come from network + script src, never page-prose regex.",
+  "description": "Evidence-only package from Demo Tools on-site scrape or Path B HTTP probe. Required: domain + origin. Railway Manifest Builder re-binds beacon-manifest; draftBeacon is never SoT. Keys from network + script src only. evidence.keys preferred; top-level secrets is a deprecated alias.",
   "type": "object",
   "required": [
+    "domain",
     "origin"
   ],
   "additionalProperties": true,
